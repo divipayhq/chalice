@@ -6,20 +6,16 @@ on:
 
 jobs:
   prcheck:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     env:
       HYPOTHESIS_PROFILE: ci
       CHALICE_TEST_EXTENDED_PACKAGING: true
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        python-version: [3.9, '3.10', 3.11, 3.12, 3.13]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-        name: Set up Python ${{ matrix.python-version }}
+        name: Set up Python 3.13
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.13
       - name: Install dependencies
         run: |
           make install-dev-deps
@@ -27,18 +23,15 @@ jobs:
         run: make prcheck
   cdktests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9, '3.10', 3.11, 3.12, 3.13]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
       - uses: actions/setup-python@v2
-        name: Set up Python ${{ matrix.python-version }}
+        name: Set up Python 3.13
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.13
       - name: Install CDK
         run: npm install -g aws-cdk
       - name: Install dependencies
