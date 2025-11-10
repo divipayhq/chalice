@@ -108,7 +108,9 @@ def cli(ctx, project_dir, debug=False):
     os.chdir(project_dir)
     if added_handler is not None:
         # Ensure logging configuration is reverted when the CLI command exits.
-        ctx.call_on_close(lambda: _restore_logging(added_handler, previous_level))
+        ctx.call_on_close(
+            lambda: _restore_logging(added_handler, previous_level)
+        )
 
 
 def _configure_cli_env_vars():
