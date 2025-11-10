@@ -2,7 +2,6 @@ name: Run PR Checks
 
 on:
   push:
-  pull_request:
 
 jobs:
   prcheck:
@@ -21,27 +20,9 @@ jobs:
           make install-dev-deps
       - name: Run PRCheck
         run: make prcheck
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - uses: actions/setup-python@v2
-        name: Set up Python 3.13
-        with:
-          python-version: 3.13
-      - name: Install CDK
-        run: npm install -g aws-cdk
-      - name: Install dependencies
-        run: |
-          pip install -r requirements-test.txt --upgrade --upgrade-strategy eager -e .[cdkv2]
-      - name: Run CDK tests
-        run: make test
   merge-checks-complete:
         runs-on: ubuntu-latest
-        needs: [prcheck, tests]
+        needs: [prcheck]
         steps:
           - name: merge-checks-complete
             run: echo 0

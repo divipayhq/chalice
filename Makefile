@@ -22,7 +22,7 @@ pylint:
 	pylint --disable=I,E,W,R,C,F --enable C9999,C9998 tests/
 
 test:
-	py.test -v $(TESTS)
+	py.test -vv $(TESTS)
 
 typecheck:
 	mypy --ignore-missing-imports --follow-imports=skip -p chalice --disallow-untyped-defs --strict-optional --warn-no-return

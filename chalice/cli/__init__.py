@@ -41,7 +41,7 @@ from chalice.cli import newproj
 
 
 def _configure_logging(level, format_string=None):
-    # type: (int, Optional[str]) -> None
+    # type: (int, Optional[str]) -> logging.Handler
     if format_string is None:
         format_string = "%(asctime)s %(name)s [%(levelname)s] %(message)s"
     logger = logging.getLogger('')
@@ -51,6 +51,22 @@ def _configure_logging(level, format_string=None):
     formatter = logging.Formatter(format_string)
     handler.setFormatter(formatter)
     logger.addHandler(handler)
+    # Return handler so callers can remove it when done.
+    return handler
+
+
+def _restore_logging(handler, previous_level):
+    # type: (logging.Handler, int) -> None
+    """Remove a handler added by _configure_logging and restore level."""
+    try:
+        root_logger = logging.getLogger('')
+        if handler in root_logger.handlers:
+            root_logger.removeHandler(handler)
+        # Restore the previous level to avoid leaking DEBUG/INFO across calls.
+        root_logger.setLevel(previous_level)
+    except Exception:
+        # Best-effort cleanup; never raise during teardown.
+        pass
 
 
 def get_system_info():
@@ -81,13 +97,18 @@ def cli(ctx, project_dir, debug=False):
         project_dir = os.getcwd()
     elif not os.path.isabs(project_dir):
         project_dir = os.path.abspath(project_dir)
+    added_handler = None  # type: Optional[logging.Handler]
+    previous_level = logging.getLogger('').level
     if debug is True:
-        _configure_logging(logging.DEBUG)
+        added_handler = _configure_logging(logging.DEBUG)
     _configure_cli_env_vars()
     ctx.obj['project_dir'] = project_dir
     ctx.obj['debug'] = debug
     ctx.obj['factory'] = CLIFactory(project_dir, debug, environ=os.environ)
     os.chdir(project_dir)
+    if added_handler is not None:
+        # Ensure logging configuration is reverted when the CLI command exits.
+        ctx.call_on_close(lambda: _restore_logging(added_handler, previous_level))
 
 
 def _configure_cli_env_vars():
