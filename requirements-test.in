@@ -5,3 +5,4 @@ coverage
 websocket-client<2.0.0
 pytest-cov
 requests
+urllib3>=2.5.0
