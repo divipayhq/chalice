@@ -32,9 +32,11 @@ jmespath==1.0.1
     #   botocore
 packaging==23.2
     # via pytest
-pluggy==1.2.0
+pluggy==1.6.0
     # via pytest
-pytest==7.4.3
+pygments==2.20.0
+    # via pytest
+pytest==9.0.3
     # via
     #   -r requirements-test.in
     #   pytest-cov
