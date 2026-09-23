@@ -152,7 +152,7 @@ wheel==0.46.2
     # via -r requirements-dev.in
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==80.10.2
+setuptools==83.0.0
     # via
     #   -r requirements-dev.in
     #   sphinx
