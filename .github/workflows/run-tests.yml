@@ -23,6 +23,14 @@ jobs:
   merge-checks-complete:
         runs-on: ubuntu-latest
         needs: [prcheck]
+        # Runs on every prcheck outcome: a skipped job reports as satisfied to
+        # branch protection, so this has to run and fail rather than be skipped.
+        if: always()
         steps:
           - name: merge-checks-complete
-            run: echo 0
+            run: |
+              if [ "${{ needs.prcheck.result }}" != "success" ]; then
+                echo "prcheck concluded: ${{ needs.prcheck.result }}"
+                exit 1
+              fi
+              echo 0
