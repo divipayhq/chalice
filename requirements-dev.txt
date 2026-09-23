@@ -81,7 +81,7 @@ pydocstyle==6.3.0
     # via -r requirements-dev.in
 pyflakes==3.2.0
     # via flake8
-pygments==2.18.0
+pygments==2.20.0
     # via
     #   -r requirements-dev.in
     #   doc8
