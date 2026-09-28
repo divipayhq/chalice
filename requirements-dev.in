@@ -1,4 +1,6 @@
 -r requirements-test.in
+# setuptools 81+ drops pkg_resources; Sphinx 4.3 still imports it.
+setuptools>=65.0,<81.0
 pylint<4.0.0
 doc8<1.0.0
 pydocstyle
