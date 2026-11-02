@@ -6,7 +6,7 @@
 #
 alabaster==1.0.0
     # via sphinx
-astroid==3.3.10
+astroid==4.0.4
     # via pylint
 attrs==24.2.0
     # via hypothesis
@@ -89,7 +89,7 @@ pygments==2.20.0
     #   doc8
     #   pytest
     #   sphinx
-pylint==3.3.7
+pylint==4.0.9
     # via -r requirements-dev.in
 pytest==9.0.3
     # via
