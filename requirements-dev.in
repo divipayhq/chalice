@@ -1,6 +1,6 @@
 -r requirements-test.in
 setuptools>=83.0.0,<84.0
-pylint<4.0.0
+pylint<5.0.0
 doc8<2.0.0
 pydocstyle
 flake8
